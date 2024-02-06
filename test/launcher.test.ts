@@ -5,15 +5,13 @@ process.env.AWS_REGION = 'eu-west-1',
 
 
 handler({
-  httpMethod: 'POST', body: '{ "location" : "Paris-2" }',
+  httpMethod: 'GET', body: '{ "location" : "Paris-2" }',
   headers: {},
   multiValueHeaders: {},
   isBase64Encoded: false,
   path: '',
   pathParameters: null,
-  queryStringParameters: {
-    id: 'c73b747b-3eb6-467f-8f28-d4f30040b5c0'
-  },
+  queryStringParameters: null,
   multiValueQueryStringParameters: null,
   stageVariables: null,
   requestContext: {
