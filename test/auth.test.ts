@@ -8,12 +8,12 @@ async function testAuth () {
   const login = await service.login('vladislav', '132501Vv&13');
   const authSession = await fetchAuthSession();
   
-  console.log('LOGIN:', login);
+  console.log('LOGIN:', authSession.tokens?.idToken?.toString());
   // console.log('authSession', authSession.tokens?.idToken?.toString())
   const credentials = await service.generateTemporaryCredentials(authSession);
-  // console.log('CREDENTIALS: ', credentials);
-  const bucketList = await listBuckets(credentials);
-  console.log('BUCKETLIST', bucketList);
+  console.log('CREDENTIALS: ', credentials);
+  // const bucketList = await listBuckets(credentials);
+  // console.log('BUCKETLIST', bucketList);
 }
 
 async function listBuckets(credentials: any) {

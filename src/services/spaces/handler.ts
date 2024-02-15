@@ -5,26 +5,31 @@ import { getSpaces } from './GetSpaces';
 import { putSpaces } from './PutSpaces';
 import { deleteSpaces } from './DeleteSpace';
 import { JsonError, MissingFieldError } from '../shared/Validator';
+import { addCorsHeader } from '../shared/Utils';
+import { captureAWSv3Client } from 'aws-xray-sdk-core';
 
-const ddbClient = new DynamoDBClient({});
+const ddbClient = captureAWSv3Client(new DynamoDBClient({}));
 
 async function handler (event: APIGatewayProxyEvent, context: Context): Promise<APIGatewayProxyResult> {
 
   let message: string = '';
-
+  
   try {
     if(event.httpMethod === 'GET') {
       const getResponse = await getSpaces(event, ddbClient);
+      addCorsHeader(getResponse);
       return getResponse;
     } else if (event.httpMethod === 'POST') {
       const postResponse = await postSpaces(event, ddbClient);
+      addCorsHeader(postResponse);
       return postResponse;
     } else if (event.httpMethod === 'PUT') {
       const putResponse = await putSpaces(event, ddbClient);
+      addCorsHeader(putResponse);
       return putResponse;
-    }
-      else if (event.httpMethod === 'DELETE') {
+    } else if (event.httpMethod === 'DELETE') {
       const deleteResponse = await deleteSpaces(event, ddbClient);
+      addCorsHeader(deleteResponse);
       return deleteResponse;
     }
   } catch (error) {
@@ -52,6 +57,7 @@ async function handler (event: APIGatewayProxyEvent, context: Context): Promise<
     statusCode: 200,
     body: JSON.stringify(message)
   }
+  addCorsHeader(response);
   return response;
 }
 
